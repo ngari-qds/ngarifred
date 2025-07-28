@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="flex flex-col lg:flex-row lg:items-center gap-4">
             <div>
               <p className="serif-body text-sm text-white enhanced-text drop-shadow-lg">
-                © 2024 Fred Mwaniki. All rights reserved.
+                © {new Date().getFullYear()} Fred Mwaniki. All rights reserved.
               </p>
               <p className="serif-body text-xs text-white/90 mt-1 enhanced-text drop-shadow-md">
                 Building signals, systems, and stories—where math meets meaning.
