@@ -51,7 +51,7 @@ const Home = () => {
               <div className="relative">
                 <div className="bg-black/20 backdrop-blur-md rounded-2xl p-4 border border-white/20 shadow-2xl">
                   <img
-                    src="/dqa.jpg"
+                    src="/dga.png"
                     alt="Fred Mwaniki working on quantitative analysis"
                     className="w-full h-[500px] lg:h-[600px] object-cover rounded-xl"
                   />
