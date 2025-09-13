@@ -401,7 +401,7 @@ const CV = () => {
       <CVPreview
         isOpen={isPDFViewerOpen}
         onClose={() => setIsPDFViewerOpen(false)}
-        pdfUrl="/Fred_Ngari_Mwaniki_Professional_CV_2.pdf"
+        pdfUrl="/Fred Mwaniki_CV_ATS.pdf"
         title="Fred Ngari Mwaniki - Professional CV"
       />
     </div>
