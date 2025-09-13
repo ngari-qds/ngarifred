@@ -108,7 +108,7 @@ const About = () => {
               <div className="relative animate-fade-in" style={{ animationDelay: "0.1s" }}>
                 <div className="aspect-[4/5] lg:aspect-[3/4] rounded-2xl overflow-hidden bg-black/20 backdrop-blur-md border border-white/20 hover:shadow-2xl transition-all duration-500 shadow-xl">
                   <img
-                    src="/Fred-Img.png"
+                    src="/Fred-Img.jpg"
                     alt="Fred Mwaniki - Quantitative Researcher"
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   />
