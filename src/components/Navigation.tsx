@@ -16,6 +16,7 @@ const Navigation = () => {
     { path: "/cv", label: "CV / Docs" },
     { path: "/quotes", label: "Quotes" },
     { path: "/resources", label: "Resources" },
+    { path: "/kechat", label: "KeChat" },
     { path: "/contact", label: "Contact" },
   ];
 

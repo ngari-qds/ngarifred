@@ -13,6 +13,7 @@ import CV from "./pages/CV";
 import Quotes from "./pages/Quotes";
 import Resources from "./pages/Resources";
 import Contact from "./pages/Contact";
+import KeChat from "./pages/KeChat";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="quotes" element={<Quotes />} />
             <Route path="resources" element={<Resources />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="kechat" element={<KeChat />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
