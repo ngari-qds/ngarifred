@@ -1,0 +1,15 @@
+{
+  "name": "@kechat/service-calls",
+  "version": "0.1.0",
+  "private": true,
+  "description": "KeChat Call Service - WebRTC signaling and SFU control (Go)",
+  "main": "cmd/server/main.go",
+  "scripts": {
+    "build": "go build -o bin/calls cmd/server/main.go",
+    "dev": "go run cmd/server/main.go",
+    "test": "go test ./...",
+    "test:coverage": "go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out",
+    "lint": "golangci-lint run",
+    "clean": "rm -rf bin/"
+  }
+}

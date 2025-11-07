@@ -1,0 +1,117 @@
+name: MVP Deliverable
+description: Track a specific MVP deliverable from the KeChat specification
+title: "[MVP]: "
+labels: ["mvp", "needs-estimation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This template is for tracking MVP deliverables as specified in the KeChat product concept.
+
+  - type: input
+    id: deliverable-name
+    attributes:
+      label: Deliverable Name
+      description: Name of the deliverable from the spec
+      placeholder: "e.g., Auth & Identity Service, Messaging Core, Payment Service"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: labels
+    attributes:
+      label: Labels
+      description: Select applicable labels
+      options:
+        - label: backend
+        - label: frontend
+        - label: infra
+        - label: infra-prod
+        - label: security
+        - label: legal
+        - label: api
+        - label: integration
+        - label: design
+        - label: ml
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Detailed description of what needs to be built
+      placeholder: |
+        Create the authentication service with the following features:
+        - Phone number + SMS OTP
+        - eCitizen OIDC integration
+        - Multi-factor authentication
+        - Device management
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: List clear, testable acceptance criteria
+      placeholder: |
+        - [ ] OTP request issues SMS via pluggable provider
+        - [ ] OTP verify returns JWT + refresh token
+        - [ ] OIDC flow simulated with sandbox
+        - [ ] Unit tests covering 80% of logic
+        - [ ] API documentation complete
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-details
+    attributes:
+      label: Technical Implementation Details
+      description: Tech stack, architecture decisions, dependencies
+      placeholder: |
+        **Tech Stack**: NestJS + TypeScript
+        **Database**: PostgreSQL
+        **Dependencies**: @nestjs/jwt, bcrypt, node-otp
+        **External APIs**: SMS provider (Twilio/Africa's Talking), eCitizen OIDC
+
+  - type: textarea
+    id: endpoints
+    attributes:
+      label: API Endpoints (if applicable)
+      description: List the API endpoints to be implemented
+      placeholder: |
+        - POST /auth/otp/request
+        - POST /auth/otp/verify
+        - GET /auth/oidc/callback
+        - POST /auth/device/register
+        - DELETE /auth/device/:id
+
+  - type: input
+    id: story-points
+    attributes:
+      label: Story Points Estimate
+      description: Rough estimate in story points
+      placeholder: "5"
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Other issues or deliverables this depends on
+      placeholder: |
+        - Depends on #1 (Monorepo skeleton)
+        - Blocks #5 (Messaging Core)
+
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: Milestone
+      description: Which development phase?
+      options:
+        - Month 0-1 (Infrastructure)
+        - Month 2-3 (Messaging & Auth)
+        - Month 3-4 (Payments)
+        - Month 4-5 (Calls & Community)
+        - Month 5-6 (Integration & Launch)
+        - Post-MVP
+    validations:
+      required: true
