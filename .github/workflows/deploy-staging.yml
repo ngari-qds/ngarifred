@@ -1,0 +1,100 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/${{ github.repository }}
+
+jobs:
+  build-and-push:
+    name: Build and Push Docker Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        service:
+          - name: auth
+            context: services/auth
+          - name: payments
+            context: services/payments
+          - name: marketplace
+            context: services/marketplace
+          - name: integrations
+            context: services/integrations
+          - name: miniapps
+            context: services/miniapps
+          - name: web
+            context: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_PREFIX }}/${{ matrix.service.name }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=raw,value=staging
+      
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.service.context }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy-staging:
+    name: Deploy to Staging K8s
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    environment:
+      name: staging
+      url: https://staging.kechat.ke
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Configure kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG_STAGING }}
+      
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl set image deployment/auth-service auth=${{ env.IMAGE_PREFIX }}/auth:staging -n kechat-staging
+          kubectl set image deployment/payments-service payments=${{ env.IMAGE_PREFIX }}/payments:staging -n kechat-staging
+          kubectl set image deployment/marketplace-service marketplace=${{ env.IMAGE_PREFIX }}/marketplace:staging -n kechat-staging
+          kubectl set image deployment/integrations-service integrations=${{ env.IMAGE_PREFIX }}/integrations:staging -n kechat-staging
+          kubectl set image deployment/miniapps-service miniapps=${{ env.IMAGE_PREFIX }}/miniapps:staging -n kechat-staging
+          kubectl set image deployment/web-app web=${{ env.IMAGE_PREFIX }}/web:staging -n kechat-staging
+      
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/auth-service -n kechat-staging --timeout=5m
+          kubectl rollout status deployment/payments-service -n kechat-staging --timeout=5m
+      
+      - name: Run smoke tests
+        run: |
+          echo "Running smoke tests..."
+          curl -f https://staging.kechat.ke/health || exit 1
